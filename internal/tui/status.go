@@ -1,9 +1,10 @@
 package tui
 
 import (
+	"fmt"
+
 	"brew-sentinel/internal/disk"
 	"brew-sentinel/internal/inventory"
-	"fmt"
 )
 
 func (u *UI) sizeText(id string) string {

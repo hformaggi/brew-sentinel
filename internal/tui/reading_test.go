@@ -1,13 +1,14 @@
 package tui
 
 import (
-	"brew-sentinel/internal/brew"
 	"fmt"
-	"github.com/gdamore/tcell/v2"
-	"github.com/rivo/tview"
-	"os"
 	"strings"
 	"testing"
+
+	"brew-sentinel/internal/brew"
+
+	"github.com/gdamore/tcell/v2"
+	"github.com/rivo/tview"
 )
 
 func TestReadingLayouts(t *testing.T) {
@@ -73,7 +74,6 @@ func TestReadingLayouts(t *testing.T) {
 					if strings.Contains(text, "Tab ") {
 						t.Fatal("Tab instruction remains")
 					}
-					os.WriteFile(fmt.Sprintf("/private/tmp/brew-sentinel-%s-%s-%d.txt", locale, tc.name, width), []byte(text), 0600)
 				})
 			}
 		}

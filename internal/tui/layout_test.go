@@ -1,12 +1,14 @@
 package tui
 
 import (
-	"brew-sentinel/internal/inventory"
 	"fmt"
-	"github.com/gdamore/tcell/v2"
 	"os"
 	"strings"
 	"testing"
+
+	"brew-sentinel/internal/inventory"
+
+	"github.com/gdamore/tcell/v2"
 )
 
 func TestWorkbenchLayouts(t *testing.T) {

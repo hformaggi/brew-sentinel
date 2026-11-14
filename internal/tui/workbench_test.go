@@ -1,10 +1,11 @@
 package tui
 
 import (
-	"brew-sentinel/internal/brew"
-	"brew-sentinel/internal/inventory"
 	"context"
 	"testing"
+
+	"brew-sentinel/internal/brew"
+	"brew-sentinel/internal/inventory"
 )
 
 func workbenchFixture() *UI {

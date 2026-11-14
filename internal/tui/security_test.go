@@ -1,12 +1,13 @@
 package tui
 
 import (
-	"brew-sentinel/internal/security"
 	"fmt"
 	"os"
 	"strings"
 	"testing"
 	"time"
+
+	"brew-sentinel/internal/security"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"

@@ -1,8 +1,9 @@
 package tui
 
 import (
-	"github.com/gdamore/tcell/v2"
 	"testing"
+
+	"github.com/gdamore/tcell/v2"
 )
 
 func TestCommandPaletteShortcut(t *testing.T) {

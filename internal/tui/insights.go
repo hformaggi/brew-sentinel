@@ -1,10 +1,11 @@
 package tui
 
 import (
-	"brew-sentinel/internal/disk"
-	"brew-sentinel/internal/security"
 	"context"
 	"fmt"
+
+	"brew-sentinel/internal/disk"
+	"brew-sentinel/internal/security"
 )
 
 // scanAfter runs without a confirmation: startup scanning is part of the app's normal use.

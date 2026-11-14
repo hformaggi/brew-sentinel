@@ -1,12 +1,14 @@
 package tui
 
 import (
-	"brew-sentinel/internal/brew"
-	"brew-sentinel/internal/inventory"
 	"context"
-	"github.com/gdamore/tcell/v2"
 	"testing"
 	"time"
+
+	"brew-sentinel/internal/brew"
+	"brew-sentinel/internal/inventory"
+
+	"github.com/gdamore/tcell/v2"
 )
 
 func TestSimulatedScreen(t *testing.T) {

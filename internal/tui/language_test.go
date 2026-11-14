@@ -1,13 +1,15 @@
 package tui
 
 import (
-	"brew-sentinel/internal/brew"
-	"brew-sentinel/internal/i18n"
 	"context"
-	"github.com/gdamore/tcell/v2"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"brew-sentinel/internal/brew"
+	"brew-sentinel/internal/i18n"
+
+	"github.com/gdamore/tcell/v2"
 )
 
 func TestLanguageMenuPersistsAndUpdatesInterface(t *testing.T) {

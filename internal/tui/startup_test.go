@@ -1,13 +1,15 @@
 package tui
 
 import (
-	"brew-sentinel/internal/brew"
 	"context"
-	"github.com/gdamore/tcell/v2"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"brew-sentinel/internal/brew"
+
+	"github.com/gdamore/tcell/v2"
 )
 
 func TestStartupScansAutomaticallyOnce(t *testing.T) {

@@ -1,15 +1,16 @@
 package main
 
 import (
-	"brew-sentinel/internal/brew"
-	"brew-sentinel/internal/i18n"
-	"brew-sentinel/internal/tui"
 	"context"
 	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
 	"os"
+
+	"brew-sentinel/internal/brew"
+	"brew-sentinel/internal/i18n"
+	"brew-sentinel/internal/tui"
 )
 
 var version = "dev"

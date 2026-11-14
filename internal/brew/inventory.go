@@ -1,14 +1,15 @@
 package brew
 
 import (
-	"brew-sentinel/internal/i18n"
-	"brew-sentinel/internal/inventory"
 	"context"
 	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+
+	"brew-sentinel/internal/i18n"
+	"brew-sentinel/internal/inventory"
 )
 
 type dependency struct {
@@ -47,6 +48,7 @@ type cask struct {
 	Installed json.RawMessage `json:"installed"`
 	Depends   struct {
 		Formula []string `json:"formula"`
+		Cask    []string `json:"cask"`
 	} `json:"depends_on"`
 }
 
@@ -141,6 +143,9 @@ func ParseInventory(data []byte, cellar string) (inventory.Snapshot, error) {
 		}
 		for _, d := range c.Depends.Formula {
 			p.Dependencies = append(p.Dependencies, "formula:"+d)
+		}
+		for _, d := range c.Depends.Cask {
+			p.Dependencies = append(p.Dependencies, "cask:"+d)
 		}
 		s.Packages = append(s.Packages, p)
 	}

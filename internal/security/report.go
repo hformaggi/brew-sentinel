@@ -1,10 +1,11 @@
 package security
 
 import (
-	"brew-sentinel/internal/i18n"
 	"encoding/json"
 	"fmt"
 	"time"
+
+	"brew-sentinel/internal/i18n"
 )
 
 type Vulnerability struct {

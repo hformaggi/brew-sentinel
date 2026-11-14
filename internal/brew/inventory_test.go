@@ -3,8 +3,32 @@ package brew
 import (
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
+
+	"brew-sentinel/internal/inventory"
 )
+
+func TestCaskDependenciesIncludeOtherCasks(t *testing.T) {
+	s, err := ParseInventory([]byte(`{"formulae":[],"casks":[
+		{"token":"parent","installed":"1","depends_on":{"formula":["library"],"cask":["child","other/tap/helper"]}},
+		{"token":"child","installed":"1"},
+		{"token":"helper","full_token":"other/tap/helper","installed":"1"}
+	]}`), t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := inventory.NewGraph(s)
+	want := []string{"formula:library", "cask:child", "cask:other/tap/helper"}
+	if got := g.Dependencies("cask:parent"); !reflect.DeepEqual(got, want) {
+		t.Fatalf("dependencies = %v, want %v", got, want)
+	}
+	for _, id := range []string{"cask:child", "cask:other/tap/helper"} {
+		if got := g.Dependents(id); !reflect.DeepEqual(got, []string{"cask:parent"}) {
+			t.Fatalf("dependents of %s = %v", id, got)
+		}
+	}
+}
 
 func TestParseInventory(t *testing.T) {
 	root := t.TempDir()

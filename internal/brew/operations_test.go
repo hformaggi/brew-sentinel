@@ -25,12 +25,3 @@ func TestPreviewArgs(t *testing.T) {
 		t.Fatal("invented uninstall dry-run")
 	}
 }
-func TestStreamBound(t *testing.T) {
-	var size int
-	w := streamWriter{emit: func(s string) { size += len(s) }}
-	p := make([]byte, 2*1024*1024)
-	n, e := w.Write(p)
-	if e != nil || n != len(p) || size != 1024*1024 || len(w.data) != size {
-		t.Fatal("unbounded transcript")
-	}
-}

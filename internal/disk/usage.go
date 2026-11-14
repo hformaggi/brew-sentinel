@@ -1,13 +1,14 @@
 package disk
 
 import (
-	"brew-sentinel/internal/i18n"
 	"context"
 	"fmt"
 	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"brew-sentinel/internal/i18n"
 )
 
 func Measure(ctx context.Context, paths []string) (int64, error) {

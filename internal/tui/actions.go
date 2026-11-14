@@ -1,13 +1,15 @@
 package tui
 
 import (
-	"brew-sentinel/internal/brew"
-	"brew-sentinel/internal/inventory"
 	"context"
 	"fmt"
+	"strings"
+
+	"brew-sentinel/internal/brew"
+	"brew-sentinel/internal/inventory"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
-	"strings"
 )
 
 func (u *UI) confirm(title, text string, run func()) {
@@ -69,10 +71,7 @@ func (u *UI) perform(args []string, kind string) {
 	if !u.ready() {
 		return
 	}
-	u.busy = true
-	u.task = "Running brew %s"
-	u.taskArgs = []any{strings.Join(args, " ")}
-	u.updateChrome()
+	ctx := u.beginTask("Running brew %s", strings.Join(args, " "))
 	if kind == "cask" {
 		u.app.Suspend(func() {
 			e := u.client.Interactive(args)
@@ -85,12 +84,11 @@ func (u *UI) perform(args []string, kind string) {
 			var input string
 			fmt.Scanln(&input)
 		})
-		u.busy = false
-		u.task = ""
+		u.finishTask()
 		u.refresh()
 		return
 	}
-	output := textView().SetDynamicColors(false).SetScrollable(true)
+	output := textView().SetDynamicColors(false).SetScrollable(true).SetMaxLines(10000)
 	panel(output.Box, u.tr("OPERATION · brew ")+strings.Join(args, " "))
 	help := textView().SetText(u.tr(" [#f1c079]● Running[-] · scroll output with ↑/↓"))
 	help.SetBackgroundColor(bg)
@@ -98,12 +96,9 @@ func (u *UI) perform(args []string, kind string) {
 	root.SetBackgroundColor(bg)
 	close := u.showPage("operation", root, output)
 	go func() {
-		ctx, cancel := context.WithCancel(u.ctx)
-		defer cancel()
 		r, e := u.client.Stream(ctx, args, func(part string) { u.app.QueueUpdateDraw(func() { fmt.Fprint(output, part); output.ScrollToEnd() }) })
 		u.app.QueueUpdateDraw(func() {
-			u.busy = false
-			u.task = ""
+			u.finishTask()
 			status := u.tr("[#67dfb5]✓ Completed[-]")
 			if e != nil || r.ExitCode != 0 {
 				status = u.tr("[#ff919b]! Operation failed[-]")

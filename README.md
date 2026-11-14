@@ -1,42 +1,31 @@
 # Brew Sentinel
 
-**Your Homebrew packages, dependencies, and security findings in one terminal interface.**
+Explore and manage your Homebrew packages from an interactive terminal interface.
 
-Brew Sentinel helps you explore your installed formulae and casks, understand why
-packages are installed, and review changes before applying them through Homebrew.
-
-[Português](README.pt-BR.md) · [Getting started](#getting-started) · [Report an issue](https://github.com/hformaggi/brew-sentinel/issues)
+See what's installed, understand package dependencies, and review updates and
+known vulnerabilities in one place. Built in Go for macOS.
 
 ## Features
 
-- **Package inventory** — inspect installed and available versions, outdated packages,
-  pinned packages, and installation reasons.
-- **Dependency explorer** — navigate dependencies and dependents, with installation
-  receipts used as evidence where available.
-- **Vulnerability reports** — scan formulae through `brew vulns --json`, with findings,
-  formula patches, and coverage gaps shown together.
-- **Package management** — search the Homebrew catalog, install, upgrade, uninstall,
-  clean up, and remove orphaned dependencies through preview and confirmation flows.
-- **Search and filters** — combine package names, descriptions, types, and installation
-  reasons to narrow down your inventory.
+- Browse installed formulae and casks, versions, and available updates.
+- Explore dependencies, dependents, and installation reasons.
+- Review vulnerability findings and scan coverage for formulae.
+- Search the Homebrew catalog and install, upgrade, or uninstall packages.
+- Preview cleanup and orphan removal before confirming.
+- Filter your inventory and sort packages by name, disk usage, or dependents.
 
-## Getting started
+## Installation
 
-### Requirements
-
-- macOS with [Homebrew](https://brew.sh/) installed and `brew` available on `PATH`.
-- Go **1.27 or later** to build from source.
-- Git to clone the repository.
-- For vulnerability reports, a Homebrew version that provides `brew vulns --json`
-  and access to the scanner's external service.
-
-### Homebrew
+Requires macOS with [Homebrew](https://brew.sh/) installed.
 
 ```sh
 brew install hformaggi/tap/brew-sentinel
+brew-sentinel
 ```
 
 ### Build from source
+
+Requires Go 1.27 or later.
 
 ```sh
 git clone https://github.com/hformaggi/brew-sentinel.git
@@ -47,80 +36,68 @@ go build -o bin/brew-sentinel ./cmd/brew-sentinel
 
 ## Usage
 
-Use the arrow keys to navigate and **Enter** to open a package or tool.
-The sidebar provides access to search, filters, sorting, maintenance, and reports.
+Use the sidebar to browse packages, search the catalog, and open maintenance tools
+or security reports. Open a package to see its details, dependencies, and actions.
+Package changes require confirmation; installation and upgrade include a preview.
 
 | Key | Action |
 | --- | --- |
-| ↑ / ↓ | Browse items or scroll text |
+| ↑ / ↓ | Browse items or scroll |
 | ← / → | Switch panes, tabs, or buttons |
 | Enter | Open or activate the selection |
-| Esc | Go back or cancel |
-| `/` | Search packages |
-| Ctrl+P | Open the command list |
-| `?` | Show help |
-| `q` | Quit |
+| Esc | Go back or close a dialog |
+| `/` | Search installed packages |
+| Ctrl+P | Open the command menu |
+| `?` | Show navigation help |
+| `q` | Quit from the package list |
 
-### Search examples
+### Search and filters
 
-Enter these expressions in the package search field. Filters can be combined.
+Search by package name or description, or combine filters:
 
 | Query | Result |
 | --- | --- |
 | `type:formula reason:explicit` | Explicitly installed formulae |
-| `type:cask chrome` | Casks matching “chrome” |
-| `outdated:true` | Packages with an available update in local metadata |
+| `type:cask chrome` | Casks matching "chrome" |
+| `outdated:true` | Packages with an available update |
 | `reason:dependency` | Packages installed as dependencies |
+
+Update availability uses local Homebrew metadata. Run `brew update` to refresh it.
 
 ### Command-line options
 
+The interface supports English and Portuguese. Use `--lang` to choose a language
+for the current session, or select one from the command menu.
+
 ```sh
-./bin/brew-sentinel --lang en      # Use English for this launch
-./bin/brew-sentinel --lang pt      # Use Portuguese for this launch
-./bin/brew-sentinel --lang system  # Follow the system locale
-./bin/brew-sentinel --json         # Print package inventory without opening the UI
-./bin/brew-sentinel --version      # Print the build version
-./bin/brew-sentinel --help         # List available options
+brew-sentinel --lang en     # English
+brew-sentinel --lang pt     # Portuguese
+brew-sentinel --json        # Print the installed package inventory as JSON
+brew-sentinel --version     # Show the version
+brew-sentinel --help        # List available options
 ```
 
-## How changes and reports work
+### Vulnerability reports
 
-Browsing packages does not change your installation. Install and upgrade actions
-show a Homebrew dry run before confirmation; uninstall shows known dependents
-and leaves final validation to Homebrew. Cleanup and orphan removal have separate
-previews. The app does not use force flags or bypass dependency checks.
+Reports require a Homebrew version with `brew vulns` support and an internet
+connection. They cover known vulnerabilities in formulae; coverage is not
+guaranteed for casks or retained older versions. Review the coverage summary
+when interpreting results, including reports with no findings.
 
-Available versions come from local Homebrew metadata. Brew Sentinel does not run
-`brew update` automatically, so refresh that metadata yourself when needed.
+## Contributing
 
-Vulnerability reports cover formulae, with no confirmed coverage for casks or
-all retained kegs. An empty report means no known matches in the assessed scope;
-check the reported coverage and rescan after upgrading. Scanning uses Homebrew's
-external service. Inventory and operation results stay in memory unless you save
-JSON output yourself.
+Suggestions, bug reports, and pull requests are welcome. Open an
+[issue](https://github.com/hformaggi/brew-sentinel/issues) with steps to reproduce
+and your macOS, Homebrew, and Brew Sentinel versions, or submit a
+[pull request](https://github.com/hformaggi/brew-sentinel/pulls).
 
-## Development
+Run the checks before submitting code:
 
 ```sh
-go test ./...
 go test -race ./...
 go vet ./...
 ```
 
-Tests use synthetic inventories, fake Homebrew commands, temporary directories,
-and simulated terminal screens. They do not install or remove real packages.
-
-For filter benchmarks:
-
-```sh
-go test ./internal/tui -bench . -run '^$'
-```
-
-Contributions are welcome through [issues](https://github.com/hformaggi/brew-sentinel/issues)
-and [pull requests](https://github.com/hformaggi/brew-sentinel/pulls).
-For bug reports, include your macOS, Homebrew, and Brew Sentinel versions,
-reproduction steps, and relevant output with personal information removed.
-
 ## License
 
-[BSD 3-Clause](LICENSE) © 2026 hformaggi.
+[BSD 3-Clause](LICENSE).

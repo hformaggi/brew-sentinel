@@ -1,12 +1,11 @@
 package brew
 
 import (
-	"brew-sentinel/internal/i18n"
 	"context"
-	"os"
-	"os/exec"
 	"regexp"
 	"strings"
+
+	"brew-sentinel/internal/i18n"
 )
 
 var packageName = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9@+_.-]*(/[a-zA-Z0-9][a-zA-Z0-9@+_.-]*){0,2}$`)
@@ -27,15 +26,6 @@ func ActionArgs(action, kind, name string) ([]string, error) {
 	return []string{action, "--" + kind, name}, nil
 }
 
-// Interactive attaches directly to the terminal; passwords never pass through logs.
-func (c *Client) Interactive(args []string) error {
-	cmd := exec.Command(c.Path, args...)
-	cmd.Env = append(os.Environ(), "HOMEBREW_NO_AUTO_UPDATE=1", "HOMEBREW_NO_INSTALL_CLEANUP=1")
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
-}
 func PreviewArgs(action, kind, name string) ([]string, error) {
 	if action == "uninstall" {
 		return nil, i18n.Errorf("uninstall does not support dry-run")

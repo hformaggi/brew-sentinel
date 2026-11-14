@@ -1,10 +1,11 @@
 package tui
 
 import (
-	"brew-sentinel/internal/inventory"
-	"brew-sentinel/internal/security"
 	"strings"
 	"testing"
+
+	"brew-sentinel/internal/inventory"
+	"brew-sentinel/internal/security"
 )
 
 func TestSecurityDoesNotConfuseTaps(t *testing.T) {

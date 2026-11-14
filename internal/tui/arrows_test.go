@@ -1,14 +1,16 @@
 package tui
 
 import (
-	"brew-sentinel/internal/brew"
 	"fmt"
-	"github.com/gdamore/tcell/v2"
-	"github.com/rivo/tview"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"brew-sentinel/internal/brew"
+
+	"github.com/gdamore/tcell/v2"
+	"github.com/rivo/tview"
 )
 
 func TestMainArrowNavigation(t *testing.T) {

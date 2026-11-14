@@ -1,8 +1,9 @@
 package tui
 
 import (
-	"brew-sentinel/internal/inventory"
 	"strings"
+
+	"brew-sentinel/internal/inventory"
 )
 
 func Filter(packages []inventory.Package, query string) []inventory.Package {

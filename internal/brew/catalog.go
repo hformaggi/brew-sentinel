@@ -1,10 +1,11 @@
 package brew
 
 import (
-	"brew-sentinel/internal/i18n"
 	"context"
 	"encoding/json"
 	"strings"
+
+	"brew-sentinel/internal/i18n"
 )
 
 type Candidate struct {

@@ -1,13 +1,15 @@
 package tui
 
 import (
-	"brew-sentinel/internal/brew"
-	"github.com/gdamore/tcell/v2"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
+
+	"brew-sentinel/internal/brew"
+
+	"github.com/gdamore/tcell/v2"
 )
 
 func runningUI(t *testing.T, u *UI) func() {

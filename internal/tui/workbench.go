@@ -1,13 +1,15 @@
 package tui
 
 import (
-	"brew-sentinel/internal/disk"
-	"brew-sentinel/internal/inventory"
 	"fmt"
-	"github.com/gdamore/tcell/v2"
-	"github.com/rivo/tview"
 	"sort"
 	"strings"
+
+	"brew-sentinel/internal/disk"
+	"brew-sentinel/internal/inventory"
+
+	"github.com/gdamore/tcell/v2"
+	"github.com/rivo/tview"
 )
 
 func (u *UI) buildLayout() {

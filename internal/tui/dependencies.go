@@ -2,6 +2,7 @@ package tui
 
 import (
 	"brew-sentinel/internal/inventory"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )

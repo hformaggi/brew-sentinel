@@ -1,8 +1,9 @@
 package tui
 
 import (
-	"brew-sentinel/internal/inventory"
 	"testing"
+
+	"brew-sentinel/internal/inventory"
 )
 
 func TestFilter(t *testing.T) {

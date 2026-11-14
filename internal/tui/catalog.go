@@ -1,9 +1,11 @@
 package tui
 
 import (
-	"brew-sentinel/internal/brew"
 	"context"
 	"fmt"
+
+	"brew-sentinel/internal/brew"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
