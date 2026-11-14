@@ -1,0 +1,21 @@
+/bin/
+.DS_Store
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Editor and local agent files
+.idea/
+.vscode/
+.agents/
+.codex/
+
+# Generated test artifacts
+coverage.out
+coverage.html
+*.test
+*.prof
