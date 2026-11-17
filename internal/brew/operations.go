@@ -10,6 +10,19 @@ import (
 
 var packageName = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9@+_.-]*(/[a-zA-Z0-9][a-zA-Z0-9@+_.-]*){0,2}$`)
 
+// UpgradeArgs selects a bulk upgrade scope without changing Homebrew's default
+// pinning or cask update policies.
+func UpgradeArgs(scope string) ([]string, error) {
+	switch scope {
+	case "all":
+		return []string{"upgrade"}, nil
+	case "formula", "cask":
+		return []string{"upgrade", "--" + scope}, nil
+	default:
+		return nil, i18n.Errorf("invalid package type")
+	}
+}
+
 func ActionArgs(action, kind, name string) ([]string, error) {
 	if action == "cleanup" || action == "autoremove" {
 		return []string{action}, nil

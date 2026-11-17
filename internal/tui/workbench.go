@@ -320,7 +320,7 @@ func (u *UI) updateChrome() {
 	if u.search.HasFocus() {
 		hint = u.tr("Type to filter · ↑ sidebar · ↓ list · ←→ cursor · Enter apply")
 	} else if u.nav.HasFocus() {
-		hint = u.tr("↑↓ select · Enter open · → back to list")
+		hint = u.tr("↑↓ select · Enter open")
 	} else if u.inspector.HasFocus() {
 		hint = u.tr("↑↓ scroll preview · ← list · Enter details")
 	}

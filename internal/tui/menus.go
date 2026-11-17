@@ -35,5 +35,12 @@ func (u *UI) packageActions(p inventory.Package) {
 	u.menu(u.tr("Actions · ")+p.Name, []menuItem{{u.tr("Inspect"), u.tr("Versions, origin and relationships"), 'e', func() { u.detail(p) }}, {u.tr("Explore dependencies"), u.tr("Browse the dependency tree"), 't', func() { u.dependencies(p) }}, {u.tr("Upgrade package"), u.tr("Review the preview before confirming"), 'u', func() { u.mutate("upgrade", p.Kind, p.FullName) }}, {u.tr("Uninstall package"), u.tr("Review dependents and confirm removal"), 'x', func() { u.mutate("uninstall", p.Kind, p.FullName) }}})
 }
 func (u *UI) maintenance() {
-	u.menu(u.tr("Maintenance"), []menuItem{{u.tr("Reload inventory"), u.tr("Read installed packages again"), 'r', u.refresh}, {u.tr("Measure disk usage"), u.tr("Formula kegs · no file changes"), 'd', u.measure}, {u.tr("Scan vulnerabilities"), u.tr("Check CVEs/advisories through Homebrew"), 'v', u.scan}, {u.tr("Clean old versions and cache"), u.tr("Preview what brew cleanup would remove"), 'c', func() { u.executeCleanup("cleanup") }}, {u.tr("Remove orphaned dependencies"), u.tr("Preview what brew autoremove would remove"), 'a', func() { u.executeCleanup("autoremove") }}})
+	u.menu(u.tr("Maintenance"), []menuItem{
+		{label: u.tr("Reload inventory"), description: u.tr("Read installed packages again"), run: u.refresh},
+		{label: u.tr("Updates"), description: u.tr("Upgrade packages or refresh Homebrew"), run: u.updatesMenu},
+		{label: u.tr("Measure disk usage"), description: u.tr("Formula kegs · no file changes"), run: u.measure},
+		{label: u.tr("Scan vulnerabilities"), description: u.tr("Check CVEs/advisories through Homebrew"), run: u.scan},
+		{label: u.tr("Clean old versions and cache"), description: u.tr("Preview what brew cleanup would remove"), run: func() { u.executeCleanup("cleanup") }},
+		{label: u.tr("Remove orphaned dependencies"), description: u.tr("Preview what brew autoremove would remove"), run: func() { u.executeCleanup("autoremove") }},
+	})
 }

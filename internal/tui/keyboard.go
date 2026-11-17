@@ -42,18 +42,11 @@ func (u *UI) handleKey(e *tcell.EventKey) *tcell.EventKey {
 		return e
 	case u.nav:
 		switch e.Key() {
-		case tcell.KeyRight:
-			row, _ := u.nav.GetSelection()
-			if row >= 1 && row <= 5 {
-				u.setSection(row - 1)
-			}
-			u.app.SetFocus(u.table)
-			return nil
 		case tcell.KeyEnter:
 			row, _ := u.nav.GetSelection()
 			u.activateNav(row)
 			return nil
-		case tcell.KeyLeft:
+		case tcell.KeyLeft, tcell.KeyRight:
 			return nil
 		}
 	case u.table:
@@ -71,7 +64,6 @@ func (u *UI) handleKey(e *tcell.EventKey) *tcell.EventKey {
 		case tcell.KeyUp:
 			row, _ := u.table.GetSelection()
 			if row <= 1 {
-				u.app.SetFocus(u.search)
 				return nil
 			}
 		}

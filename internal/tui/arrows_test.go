@@ -20,9 +20,22 @@ func TestMainArrowNavigation(t *testing.T) {
 	u.app.QueueEvent(tcell.NewEventKey(tcell.KeyLeft, 0, 0))
 	waitUI(t, u, func() bool { return u.app.GetFocus() == u.nav })
 	u.app.QueueEvent(tcell.NewEventKey(tcell.KeyDown, 0, 0))
-	u.app.QueueEvent(tcell.NewEventKey(tcell.KeyRight, 0, 0))
+	waitUI(t, u, func() bool { row, _ := u.nav.GetSelection(); return row == 2 })
+	u.app.QueueUpdateDraw(func() {
+		u.handleKey(tcell.NewEventKey(tcell.KeyRight, 0, 0))
+		if u.section != 0 || u.app.GetFocus() != u.nav {
+			t.Error("right arrow activated sidebar selection")
+		}
+	})
+	u.app.QueueEvent(tcell.NewEventKey(tcell.KeyEnter, 0, 0))
 	waitUI(t, u, func() bool { return u.section == 1 && u.app.GetFocus() == u.table })
-	u.app.QueueEvent(tcell.NewEventKey(tcell.KeyUp, 0, 0))
+	u.app.QueueUpdateDraw(func() {
+		u.handleKey(tcell.NewEventKey(tcell.KeyUp, 0, 0))
+		if u.app.GetFocus() != u.table {
+			t.Error("up at the first package moved focus out of the list")
+		}
+	})
+	u.app.QueueEvent(tcell.NewEventKey(tcell.KeyRune, '/', 0))
 	waitUI(t, u, func() bool { return u.app.GetFocus() == u.search })
 	u.app.QueueEvent(tcell.NewEventKey(tcell.KeyDown, 0, 0))
 	waitUI(t, u, func() bool { return u.app.GetFocus() == u.table })
@@ -161,22 +174,43 @@ func TestCloseAfterResizeRestoresVisibleFocus(t *testing.T) {
 	waitUI(t, u, func() bool { return u.app.GetFocus() == u.table })
 }
 
-func TestRightFromToolsReturnsToPackageList(t *testing.T) {
-	for row := 8; row <= 16; row++ {
+func TestRightFromSidebarRequiresEnter(t *testing.T) {
+	for _, row := range []int{1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16} {
 		t.Run(fmt.Sprint(row), func(t *testing.T) {
 			u := workbenchFixture()
 			u.table.Select(2, 0)
 			u.app.SetFocus(u.nav)
 			u.nav.Select(row, 0)
 			u.handleKey(tcell.NewEventKey(tcell.KeyRight, 0, 0))
-			if u.app.GetFocus() != u.table {
-				t.Error("right arrow did not return to package list")
+			if u.app.GetFocus() != u.nav {
+				t.Error("right arrow moved out of sidebar without Enter")
+			}
+			if u.section != 0 {
+				t.Error("right arrow activated a category")
 			}
 			if name, _ := u.pages.GetFrontPage(); name != "main" {
 				t.Errorf("right arrow activated tool: %s", name)
 			}
 			if p, ok := u.selected(); !ok || p.ID != "formula:beta" {
 				t.Error("package selection changed")
+			}
+		})
+	}
+}
+
+func TestUpAtStartOfPackageListKeepsFocus(t *testing.T) {
+	for section := 0; section < 5; section++ {
+		t.Run(fmt.Sprint(section), func(t *testing.T) {
+			u := workbenchFixture()
+			u.setSection(section)
+			u.app.SetFocus(u.table)
+			row, col := u.table.GetSelection()
+			u.handleKey(tcell.NewEventKey(tcell.KeyUp, 0, 0))
+			if u.app.GetFocus() != u.table {
+				t.Error("up at list boundary moved focus")
+			}
+			if r, c := u.table.GetSelection(); r != row || c != col {
+				t.Error("up at list boundary changed selection")
 			}
 		})
 	}

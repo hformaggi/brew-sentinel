@@ -40,6 +40,9 @@ Use the sidebar to browse packages, search the catalog, and open maintenance too
 or security reports. Open a package to see its details, dependencies, and actions.
 Package changes require confirmation; installation and upgrade include a preview.
 
+Open **Maintenance → Updates** to upgrade all packages, only formulae, or only
+applications. The same menu lets you update Homebrew and refresh its package catalog.
+
 | Key | Action |
 | --- | --- |
 | ↑ / ↓ | Browse items or scroll |
@@ -62,7 +65,8 @@ Search by package name or description, or combine filters:
 | `outdated:true` | Packages with an available update |
 | `reason:dependency` | Packages installed as dependencies |
 
-Update availability uses local Homebrew metadata. Run `brew update` to refresh it.
+Update availability uses local Homebrew metadata. Refresh it through
+**Maintenance → Updates → Update Homebrew** or by running `brew update`.
 
 ### Command-line options
 

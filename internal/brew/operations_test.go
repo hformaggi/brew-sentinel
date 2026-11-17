@@ -1,6 +1,30 @@
 package brew
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
+
+func TestUpgradeArgs(t *testing.T) {
+	for _, tc := range []struct {
+		scope string
+		want  []string
+	}{
+		{"all", []string{"upgrade"}},
+		{"formula", []string{"upgrade", "--formula"}},
+		{"cask", []string{"upgrade", "--cask"}},
+	} {
+		got, err := UpgradeArgs(tc.scope)
+		if err != nil || !reflect.DeepEqual(got, tc.want) {
+			t.Fatalf("%s: %v %v", tc.scope, got, err)
+		}
+	}
+	for _, scope := range []string{"", "--force", "formula --greedy", "unknown"} {
+		if _, err := UpgradeArgs(scope); err == nil {
+			t.Fatalf("accepted invalid scope %q", scope)
+		}
+	}
+}
 
 func TestActionArguments(t *testing.T) {
 	a, e := ActionArgs("uninstall", "cask", "foo")
